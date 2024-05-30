@@ -103,9 +103,6 @@
         align-items: center;
         
       }
-      .d-none {
-    display: none;
-}
     </style>
   </head>
   <body>
@@ -128,8 +125,8 @@
               />
             </svg>
           </button>
+          <p id="message" class="text-center mt-3">버튼을 누르고 말씀하세요.</p>
         </div>
-        <p id="message" class="text-center mt-3">버튼을 누르고 말씀하세요.</p>
         <div>
           <button class="stt-stop-button" id="stt-stop-button">
             <svg
@@ -271,21 +268,21 @@
 
 
       function enable_stt() {
-        speech_recognition.start()
-        message.innerHTML = '음성인식 중...'
-        stt_start_button.classList.add('d-none')
-        stt_start_text.classList.add('d-none')
         stt_stop_button.classList.remove('d-none')
         stt_stop_text.classList.remove('d-none')
+        stt_start_button.classList.add('d-none')
+        stt_start_text.classList.add('d-none')
+        speech_recognition.start()
+        message.innerHTML = '음성인식 중...'
       }
 
       function disable_stt() {
-        speech_recognition.stop()
-        message.innerHTML = '버튼을 누르고 말씀하세요.'
         stt_start_button.classList.remove('d-none')
         stt_start_text.classList.remove('d-none')
         stt_stop_button.classList.add('d-none')
         stt_stop_text.classList.add('d-none')
+        speech_recognition.stop()
+        message.innerHTML = '버튼을 누르고 말씀하세요.'
       }
 
       speech_recognition.onresult = function (e) {
