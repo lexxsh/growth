@@ -306,58 +306,42 @@
 
     
       const addButton = document.querySelector('#add-button');
-addButton.addEventListener('click', function() {
+      addButton.addEventListener('click', function() {
     const textArea = document.querySelector('#text-area');
-    const textContainer = document.querySelector('#text-part');
-    const dateContainer = document.querySelector('#date-part');
-    const expiryContainer = document.querySelector('#expiry-part');
-    const dDayContainer = document.querySelector('#d-day-part');
+    const textPart = document.querySelector('#text-part');
+    const datePart = document.querySelector('#date-part');
 
+    // 한글 텍스트와 숫자 날짜를 분리
     const content = textArea.value;
     const regex = /([가-힣]+)[, ]+(\d{8})\./;
     const matches = content.match(regex);
 
     if (matches) {
-        const text = matches[1];
-        const dateString = matches[2];
+        const text = matches[1]; // 한글 텍스트
+        const dateString = matches[2]; // 날짜 숫자 문자열
 
-        const newTextDiv = document.createElement('div');
-        newTextDiv.textContent = text;
-        textContainer.appendChild(newTextDiv);
+        // 텍스트 파트에 텍스트 저장
+        const newTextElement = document.createElement('div');
+        newTextElement.textContent = text;
+        textPart.appendChild(newTextElement);
+        // 콘솔에 텍스트 출력
         console.log('저장된 텍스트:', text);
 
+        // 날짜를 YYYY.MM.DD 형식으로 변환
         const year = dateString.slice(0, 4);
         const month = dateString.slice(4, 6);
         const day = dateString.slice(6, 8);
         const formattedDate = `${year}.${month}.${day}`;
 
-        const newDateDiv = document.createElement('div');
-        newDateDiv.textContent = formattedDate;
-        dateContainer.appendChild(newDateDiv);
+        // 날짜 파트에 날짜 저장
+        const newDateElement = document.createElement('div');
+        newDateElement.textContent = formattedDate;
+        datePart.appendChild(newDateElement);
+        // 콘솔에 날짜 출력
         console.log('저장된 날짜:', formattedDate);
-
-        let expiryDate = new Date(year, month - 1, day);
-        if (text === "달걀") {
-            expiryDate.setDate(expiryDate.getDate() + 30);
-        } else if (text === "치즈") {
-            expiryDate.setDate(expiryDate.getDate() + 5);
-        }
-
-        const expiryDateString = `${expiryDate.getFullYear()}.${expiryDate.getMonth() + 1}.${expiryDate.getDate()}`;
-        const newExpiryDiv = document.createElement('div');
-        newExpiryDiv.textContent = expiryDateString;
-        expiryContainer.appendChild(newExpiryDiv);
-        console.log('유효 기한:', expiryDateString);
-
-        const today = new Date();
-        const timeDiff = expiryDate.getTime() - today.getTime();
-        const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        const newDDayDiv = document.createElement('div');
-        newDDayDiv.textContent = `D-${daysUntilExpiry}`;
-        dDayContainer.appendChild(newDDayDiv);
-        console.log('D-Day:', `D-${daysUntilExpiry}`);
     }
 });
+
 
     </script>
   </body>
