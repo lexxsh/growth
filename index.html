@@ -270,6 +270,7 @@
 
       function enable_stt() {
         stt_stop_button.classList.remove('d-none')
+        stt_stop_text.classList.remove('d-none')
         stt_start_button.classList.add('d-none')
         speech_recognition.start()
         message.innerHTML = '음성인식 중...'
@@ -278,6 +279,7 @@
       function disable_stt() {
         stt_start_button.classList.remove('d-none')
         stt_stop_button.classList.add('d-none')
+        stt_stop_text.classList.add('d-none')
         speech_recognition.stop()
         message.innerHTML = '버튼을 누르고 말씀하세요.'
       }
@@ -328,7 +330,7 @@
 
         // 한글 텍스트와 숫자 날짜를 분리
         const content = textArea.value;
-        const regex = /([가-힣]+)\s(\d{8})\./;
+        const regex = /([가-힣]+)[, ]+(\d{8})\./;
         const matches = content.match(regex);
 
         if (matches) {
