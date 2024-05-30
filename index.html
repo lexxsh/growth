@@ -337,22 +337,56 @@ addButton.addEventListener('click', function() {
         datePart.textContent = formattedDate;
         // 콘솔에 날짜 출력
         console.log('저장된 날짜:', formattedDate);
-        let expiryDate = new Date(year, month - 1, day); // Month is zero-indexed in JavaScript Date
+        const addButton = document.querySelector('#add-button');
+addButton.addEventListener('click', function() {
+    const textArea = document.querySelector('#text-area');
+    const textContainer = document.querySelector('#text-part');
+    const dateContainer = document.querySelector('#date-part');
+    const expiryContainer = document.querySelector('#expiry-part');
+    const dDayContainer = document.querySelector('#d-day-part');
+
+    const content = textArea.value;
+    const regex = /([가-힣]+)[, ]+(\d{8})\./;
+    const matches = content.match(regex);
+
+    if (matches) {
+        const text = matches[1];
+        const dateString = matches[2];
+
+        const newTextDiv = document.createElement('div');
+        newTextDiv.textContent = text;
+        textContainer.appendChild(newTextDiv);
+        console.log('저장된 텍스트:', text);
+
+        const year = dateString.slice(0, 4);
+        const month = dateString.slice(4, 6);
+        const day = dateString.slice(6, 8);
+        const formattedDate = `${year}.${month}.${day}`;
+
+        const newDateDiv = document.createElement('div');
+        newDateDiv.textContent = formattedDate;
+        dateContainer.appendChild(newDateDiv);
+        console.log('저장된 날짜:', formattedDate);
+
+        let expiryDate = new Date(year, month - 1, day);
         if (text === "달걀") {
-            expiryDate.setDate(expiryDate.getDate() + 30); // Add 30 days for eggs
+            expiryDate.setDate(expiryDate.getDate() + 30);
         } else if (text === "치즈") {
-            expiryDate.setDate(expiryDate.getDate() + 5); // Add 5 days for cheese
+            expiryDate.setDate(expiryDate.getDate() + 5);
         }
 
         const expiryDateString = `${expiryDate.getFullYear()}.${expiryDate.getMonth() + 1}.${expiryDate.getDate()}`;
-        expiryPart.textContent = expiryDateString;
+        const newExpiryDiv = document.createElement('div');
+        newExpiryDiv.textContent = expiryDateString;
+        expiryContainer.appendChild(newExpiryDiv);
         console.log('유효 기한:', expiryDateString);
 
-        // Calculate D-Day
         const today = new Date();
         const timeDiff = expiryDate.getTime() - today.getTime();
         const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        dDayPart.textContent = `D-${daysUntilExpiry}`;
+        const newDDayDiv = document.createElement('div');
+        newDDayDiv.textContent = `D-${daysUntilExpiry}`;
+        dDayContainer.appendChild(newDDayDiv);
         console.log('D-Day:', `D-${daysUntilExpiry}`);
 
     } else {
