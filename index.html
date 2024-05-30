@@ -189,8 +189,8 @@
             </div>
             </div>
               <div class="pic">
-              <img src="img.png" alt="냉장고" style="width: 90%; margin-top: 40px;">
-              <img src="img2.png" alt="냉장고글짜" style="width: 90%; margin-top: 20px;">
+              <img src="img.png" id = "img"alt="냉장고" style="width: 90%; margin-top: 40px;">
+              <img src="img2.png" id = "img"alt="냉장고글짜" style="width: 90%; margin-top: 20px;">
               </div>
             </div>
 
@@ -250,6 +250,7 @@
       const stt_stop_button = document.querySelector('#stt-stop-button')
       const stt_start_text = document.querySelector('#status-start-text')
       const stt_stop_text = document.querySelector('#status-stop-text')
+      const img = document.querySelector('#img')
       const add_button = document.querySelector('#add-button')
       const message = document.querySelector('#message')
       const content_field = document.querySelector('#stt-form [name=content]')
@@ -317,6 +318,7 @@ addButton.addEventListener('click', function() {
     const matches = content.match(regex);
 
     if (matches) {
+        img.classList.add('d-none')
         const text = matches[1]; // 한글 텍스트
         const dateString = matches[2]; // 날짜 숫자 문자열
 
