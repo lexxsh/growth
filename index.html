@@ -329,25 +329,33 @@
         const textPart = document.querySelector('#text-part');
         const datePart = document.querySelector('#date-part');
 
-        // 텍스트와 날짜 분리
-        const [text, dateStringWithDot] = textArea.value.split(',');
-        const dateString = dateStringWithDot.slice(0, -1); // 마지막 점 제거
+        // 한글 텍스트와 숫자 날짜를 분리
+        const content = textArea.value;
+        const regex = /([가-힣]+),(\d{8})\./;
+        const matches = content.match(regex);
 
-        // 텍스트 파트에 텍스트 저장
-        textPart.textContent = text.trim();
-        // 콘솔에 텍스트 출력
-        console.log('저장된 텍스트:', text.trim());
+        if (matches) {
+            const text = matches[1]; // 한글 텍스트
+            const dateString = matches[2]; // 날짜 숫자 문자열
 
-        // 날짜를 YYYY.MM.DD 형식으로 변환
-        const year = dateString.slice(0, 4);
-        const month = dateString.slice(4, 6);
-        const day = dateString.slice(6, 8);
-        const formattedDate = `${year}.${month}.${day}`;
+            // 텍스트 파트에 텍스트 저장
+            textPart.textContent = text;
+            // 콘솔에 텍스트 출력
+            console.log('저장된 텍스트:', text);
 
-        // 날짜 파트에 날짜 저장
-        datePart.textContent = formattedDate;
-        // 콘솔에 날짜 출력
-        console.log('저장된 날짜:', formattedDate);
+            // 날짜를 YYYY.MM.DD 형식으로 변환
+            const year = dateString.slice(0, 4);
+            const month = dateString.slice(4, 6);
+            const day = dateString.slice(6, 8);
+            const formattedDate = `${year}.${month}.${day}`;
+
+            // 날짜 파트에 날짜 저장
+            datePart.textContent = formattedDate;
+            // 콘솔에 날짜 출력
+            console.log('저장된 날짜:', formattedDate);
+        } else {
+            console.error('입력 형식이 올바르지 않습니다.');
+        }
     });
 });
 
