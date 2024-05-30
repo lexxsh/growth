@@ -339,10 +339,9 @@ addButton.addEventListener('click', function() {
         datePart.appendChild(newDateElement);
         // 콘솔에 날짜 출력
         console.log('저장된 날짜:', formattedDate);
-        warningPart.textContent = '';
     } else {
         // 경고 메시지 표시
-        warningPart.textContent = '입력 형식이 잘못되었습니다. 예시: "텍스트, 20240101."';
+        console.log('입력 형식이 잘못되었습니다. 예시: "텍스트, 20240101."')
     }
 });
 
