@@ -185,7 +185,7 @@
                 <div class="tr">
               <div id="text-part" style="width: 90px;">dd</div>
               <div id="date-part" style="width: 115px;">dd</div>
-              <div id="dday-part" style="width: 90px;"></div>
+              <div id="d-day-part" style="width: 90px;"></div>
             </div>
             </div>
               <div class="pic">
@@ -304,29 +304,7 @@
       }
 
 
-      function addToTable(item, dateStr, inputDate) {
-        const currentDate = new Date()
-        currentDate.setHours(0, 0, 0, 0)
-        inputDate.setHours(0, 0, 0, 0)
-
-        const timeDiff = inputDate.getTime() - currentDate.getTime()
-        const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
-        let dDayText =
-          dayDiff === 0
-            ? '오늘이 D-Day입니다!'
-            : dayDiff > 0
-            ? `D-${dayDiff}`
-            : `D+${Math.abs(dayDiff)}`
-
-        let newRow = dateTableBody.insertRow()
-        let menuCell = newRow.insertCell(0)
-        let dateCell = newRow.insertCell(1)
-        let dDayCell = newRow.insertCell(2)
-
-        menuCell.innerText = item
-        dateCell.innerText = dateStr
-        dDayCell.innerText = dDayText
-      }
+    
       const addButton = document.querySelector('#add-button');
 addButton.addEventListener('click', function() {
     const textArea = document.querySelector('#text-area');
@@ -359,18 +337,24 @@ addButton.addEventListener('click', function() {
         datePart.textContent = formattedDate;
         // 콘솔에 날짜 출력
         console.log('저장된 날짜:', formattedDate);
+        let expiryDate = new Date(year, month - 1, day); // Month is zero-indexed in JavaScript Date
+        if (text === "달걀") {
+            expiryDate.setDate(expiryDate.getDate() + 30); // Add 30 days for eggs
+        } else if (text === "치즈") {
+            expiryDate.setDate(expiryDate.getDate() + 5); // Add 5 days for cheese
+        }
 
-   // 날짜에서 +30일 계산
-   let calculatedDate = new Date(year, month - 1, day); // 월은 0부터 시작하므로 1을 빼줍니다.
-        calculatedDate.setDate(calculatedDate.getDate() + 30);
-        const calculatedDateString = calculatedDate.toISOString().split('T')[0];
-        expiryPart.textContent = `계산된 날짜: ${calculatedDateString}`;
+        const expiryDateString = `${expiryDate.getFullYear()}.${expiryDate.getMonth() + 1}.${expiryDate.getDate()}`;
+        expiryPart.textContent = expiryDateString;
+        console.log('유효 기한:', expiryDateString);
 
-        // 오늘 날짜로부터 D-day 계산
+        // Calculate D-Day
         const today = new Date();
-        const dDay = Math.ceil((calculatedDate - today) / (1000 * 60 * 60 * 24));
-        dDayPart.textContent = dDay;
-        console.log('계산된 날짜:', calculatedDateString, 'D-day:', dDay);
+        const timeDiff = expiryDate.getTime() - today.getTime();
+        const daysUntilExpiry = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        dDayPart.textContent = `D-${daysUntilExpiry}`;
+        console.log('D-Day:', `D-${daysUntilExpiry}`);
+
     } else {
         console.error('입력 형식이 올바르지 않습니다.');
     }
