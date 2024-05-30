@@ -103,6 +103,9 @@
         align-items: center;
         
       }
+      .d-none {
+    display: none;
+}
     </style>
   </head>
   <body>
@@ -259,7 +262,6 @@
       stt_start_button.addEventListener('click', e => {
         e.preventDefault()
         enable_stt()
-        removediv.classList.remove('d-none')
       })
 
       stt_stop_button.addEventListener('click', e => {
