@@ -328,7 +328,7 @@
 
         // 한글 텍스트와 숫자 날짜를 분리
         const content = textArea.value;
-        const regex = /([가-힣]+),(\d{8})\./;
+        const regex = /([가-힣]+)\s(\d{8})\./;
         const matches = content.match(regex);
 
         if (matches) {
