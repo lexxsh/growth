@@ -360,25 +360,17 @@ addButton.addEventListener('click', function() {
         // 콘솔에 날짜 출력
         console.log('저장된 날짜:', formattedDate);
 
-        // 식품별 유통기한 계산
-        const currentDate = new Date();
-        let expiryDate = new Date(currentDate);
-        let daysToAdd = 0;
-        if (text === '치즈') {
-            daysToAdd = 5;
-        } else if (text === '달걀') {
-            daysToAdd = 30;
-        }
+   // 날짜에서 +30일 계산
+   let calculatedDate = new Date(year, month - 1, day); // 월은 0부터 시작하므로 1을 빼줍니다.
+        calculatedDate.setDate(calculatedDate.getDate() + 30);
+        const calculatedDateString = calculatedDate.toISOString().split('T')[0];
+        expiryPart.textContent = `계산된 날짜: ${calculatedDateString}`;
 
-        if (daysToAdd > 0) {
-            expiryDate.setDate(currentDate.getDate() + daysToAdd);
-            const expiryDateString = expiryDate.toISOString().split('T')[0];
-            expiryPart.textContent = `유통기한: ${expiryDateString}`;
-            const dDay = Math.ceil((expiryDate - currentDate) / (1000 * 60 * 60 * 24));
-            dDayPart.textContent = `D-day: ${dDay}`;
-            console.log('유통기한:', expiryDateString, 'D-day:', dDay);
-        }
-
+        // 오늘 날짜로부터 D-day 계산
+        const today = new Date();
+        const dDay = Math.ceil((calculatedDate - today) / (1000 * 60 * 60 * 24));
+        dDayPart.textContent = dDay;
+        console.log('계산된 날짜:', calculatedDateString, 'D-day:', dDay);
     } else {
         console.error('입력 형식이 올바르지 않습니다.');
     }
