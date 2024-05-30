@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>음성 인식 날짜 비교</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        height: 932px;
+        width: 430px;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .stt-start-button {
+        background-color: transparent;
+        border: none;
+      }
+      .stt-stop-button {
+        background-color: transparent;
+        border: none;
+      }
+      .text-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .tr{
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        gap: 30px;
+      }
+      .th{
+        border: 1px solid;
+        border-radius: 30px;
+        background-color: #0061F3 !important;
+        color: white;
+        height:  30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .table1{
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="text-center">
+        <div>
+          <button class="stt-start-button" id="stt-start-button">
+            <svg
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="50" cy="50" r="50" fill="white" />
+              <path
+                d="M50 57.8947C47.0238 57.8947 44.494 56.9737 42.4107 55.1316C40.3274 53.2895 39.2857 51.0526 39.2857 48.4211V29.4737C39.2857 26.8421 40.3274 24.6053 42.4107 22.7632C44.494 20.9211 47.0238 20 50 20C52.9762 20 55.506 20.9211 57.5893 22.7632C59.6726 24.6053 60.7143 26.8421 60.7143 29.4737V48.4211C60.7143 51.0526 59.6726 53.2895 57.5893 55.1316C55.506 56.9737 52.9762 57.8947 50 57.8947ZM46.4286 80V70.2895C40.2381 69.5526 35.119 67.1053 31.0714 62.9474C27.0238 58.7895 25 53.9474 25 48.4211H32.1429C32.1429 52.7895 33.8839 56.5132 37.3661 59.5921C40.8482 62.6711 45.0595 64.2105 50 64.2105C54.9405 64.2105 59.1518 62.6711 62.6339 59.5921C66.1161 56.5132 67.8571 52.7895 67.8571 48.4211H75C75 53.9474 72.9762 58.7895 68.9286 62.9474C64.881 67.1053 59.7619 69.5526 53.5714 70.2895V80H46.4286ZM50 51.5789C51.0119 51.5789 51.8601 51.2763 52.5446 50.6711C53.2292 50.0658 53.5714 49.3158 53.5714 48.4211V29.4737C53.5714 28.5789 53.2292 27.8289 52.5446 27.2237C51.8601 26.6184 51.0119 26.3158 50 26.3158C48.9881 26.3158 48.1399 26.6184 47.4554 27.2237C46.7708 27.8289 46.4286 28.5789 46.4286 29.4737V48.4211C46.4286 49.3158 46.7708 50.0658 47.4554 50.6711C48.1399 51.2763 48.9881 51.5789 50 51.5789Z"
+                fill="#0061F3"
+              />
+            </svg>
+          </button>
+          <p id="status-start-text">음성인식하기</p>
+        </div>
+        <div>
+          <button class="stt-stop-button" id="stt-stop-button">
+            <svg
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="50" cy="50" r="50" fill="white" />
+              <path
+                d="M50 57.8947C47.0238 57.8947 44.494 56.9737 42.4107 55.1316C40.3274 53.2895 39.2857 51.0526 39.2857 48.4211V29.4737C39.2857 26.8421 40.3274 24.6053 42.4107 22.7632C44.494 20.9211 47.0238 20 50 20C52.9762 20 55.506 20.9211 57.5893 22.7632C59.6726 24.6053 60.7143 26.8421 60.7143 29.4737V48.4211C60.7143 51.0526 59.6726 53.2895 57.5893 55.1316C55.506 56.9737 52.9762 57.8947 50 57.8947ZM46.4286 80V70.2895C40.2381 69.5526 35.119 67.1053 31.0714 62.9474C27.0238 58.7895 25 53.9474 25 48.4211H32.1429C32.1429 52.7895 33.8839 56.5132 37.3661 59.5921C40.8482 62.6711 45.0595 64.2105 50 64.2105C54.9405 64.2105 59.1518 62.6711 62.6339 59.5921C66.1161 56.5132 67.8571 52.7895 67.8571 48.4211H75C75 53.9474 72.9762 58.7895 68.9286 62.9474C64.881 67.1053 59.7619 69.5526 53.5714 70.2895V80H46.4286ZM50 51.5789C51.0119 51.5789 51.8601 51.2763 52.5446 50.6711C53.2292 50.0658 53.5714 49.3158 53.5714 48.4211V29.4737C53.5714 28.5789 53.2292 27.8289 52.5446 27.2237C51.8601 26.6184 51.0119 26.3158 50 26.3158C48.9881 26.3158 48.1399 26.6184 47.4554 27.2237C46.7708 27.8289 46.4286 28.5789 46.4286 29.4737V48.4211C46.4286 49.3158 46.7708 50.0658 47.4554 50.6711C48.1399 51.2763 48.9881 51.5789 50 51.5789Z"
+                fill="#0061F3"
+              />
+            </svg>
+          </button>
+          <p id="status-stop-text">음성중지하기</p>
+        </div>
+        <button
+          id="add-button"
+          class="btn btn-success"
+          type="button"
+          style="height: 30px"
+        >
+          추가하기
+        </button>
+      </div>
+      <p id="message" class="text-center mt-3">버튼을 누르고 말씀하세요.</p>
+      <form id="stt-form" class="mt-3">
+        <div class="mb-3">
+          <textarea
+            name="content"
+            class="form-control"
+            rows="4"
+            readonly
+          ></textarea>
+        </div>
+      </form>
+      <div>
+      <div class="container mt-5">
+        <h1>D-Day 계산기</h1>
+        <div class="table1" id="dateTable">
+            <div class="thead">
+              <div class="tr">
+                <div class="th" style="width: 90px;">품목</div>
+                <div class="th" style="width: 115px;">소비기한</div>
+                <div class="th" style="width: 90px;">D-Day</div>
+              </div>
+            </div>
+            <div class="tbody" id="dateTableBody"></div>
+          </div>
+      </div>
+      <div class="container mt-3">
+        <h2>오늘 날짜</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>현재 날짜</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td id="current-date-cell"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        updateCurrentDate()
+        setMidnightUpdate()
+      })
+
+      function updateCurrentDate() {
+        const currentDate = new Date()
+        const currentDateFormatted = currentDate.toLocaleDateString('ko-KR')
+        document.getElementById('current-date-cell').innerText =
+          currentDateFormatted
+      }
+
+      function setMidnightUpdate() {
+        const now = new Date()
+        const night = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate() + 1,
+          0,
+          0,
+          0
+        )
+        const msToMidnight = night.getTime() - now.getTime()
+
+        setTimeout(() => {
+          updateCurrentDate()
+          setMidnightUpdate()
+        }, msToMidnight)
+      }
+
+      const stt_start_button = document.querySelector('#stt-start-button')
+      const stt_stop_button = document.querySelector('#stt-stop-button')
+      const stt_start_text = document.querySelector('#status-start-text')
+      const stt_stop_text = document.querySelector('#status-stop-text')
+      const add_button = document.querySelector('#add-button')
+      const message = document.querySelector('#message')
+      const content_field = document.querySelector('#stt-form [name=content]')
+      const dateTableBody = document.querySelector('#dateTableBody')
+      let lastTranscript = ''
+
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition
+      const speech_recognition = new SpeechRecognition()
+      speech_recognition.lang = 'ko-kr'
+      speech_recognition.continuous = true
+      stt_stop_button.classList.add('d-none')
+      stt_stop_text.classList.add('d-none')
+      stt_start_button.addEventListener('click', e => {
+        e.preventDefault()
+        enable_stt()
+        removediv.classList.remove('d-none')
+      })
+
+      stt_stop_button.addEventListener('click', e => {
+        e.preventDefault()
+        disable_stt()
+      })
+
+      add_button.addEventListener('click', e => {
+        e.preventDefault()
+        if (content_field.value.trim().length > 0) {
+          processInput(content_field.value)
+        }
+      })
+
+      function enable_stt() {
+        speech_recognition.start()
+        message.innerHTML = '음성인식 중...'
+        stt_start_button.classList.add('d-none')
+        stt_start_text.classList.add('d-none')
+        stt_stop_button.classList.remove('d-none')
+        stt_stop_text.classList.remove('d-none')
+      }
+
+      function disable_stt() {
+        speech_recognition.stop()
+        message.innerHTML = '버튼을 누르고 말씀하세요.'
+        stt_start_button.classList.remove('d-none')
+        stt_start_text.classList.remove('d-none')
+        stt_stop_button.classList.add('d-none')
+        stt_stop_text.classList.add('d-none')
+      }
+
+      speech_recognition.onresult = function (e) {
+        lastTranscript = Array.from(e.results)
+          .map(result => result[0])
+          .map(speech => speech.transcript)
+          .join(' ')
+        content_field.value = lastTranscript
+      }
+
+      speech_recognition.onerror = function (e) {
+        console.error(e)
+        disable_stt()
+      }
+
+      function processInput(input) {
+        const datePattern = /(\d{4}년\s*\d{1,2}월\s*\d{1,2}일)$/
+        const dateMatch = input.match(datePattern)
+        if (dateMatch) {
+          const inputDateStr = dateMatch[0]
+          const inputDateParts = inputDateStr.match(
+            /(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/
+          )
+          const inputDate = new Date(
+            inputDateParts[1],
+            inputDateParts[2] - 1,
+            inputDateParts[3]
+          )
+          const item = input.replace(inputDateStr, '').trim()
+          addToTable(item, inputDateStr, inputDate)
+        } else {
+          alert('유효한 날짜 형식을 입력해주세요.')
+        }
+      }
+
+      function addToTable(item, dateStr, inputDate) {
+        const currentDate = new Date()
+        currentDate.setHours(0, 0, 0, 0)
+        inputDate.setHours(0, 0, 0, 0)
+
+        const timeDiff = inputDate.getTime() - currentDate.getTime()
+        const dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
+        let dDayText =
+          dayDiff === 0
+            ? '오늘이 D-Day입니다!'
+            : dayDiff > 0
+            ? `D-${dayDiff}`
+            : `D+${Math.abs(dayDiff)}`
+
+        let newRow = dateTableBody.insertRow()
+        let menuCell = newRow.insertCell(0)
+        let dateCell = newRow.insertCell(1)
+        let dDayCell = newRow.insertCell(2)
+
+        menuCell.innerText = item
+        dateCell.innerText = dateStr
+        dDayCell.innerText = dDayText
+      }
+    </script>
+  </body>
+</html>
