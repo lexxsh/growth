@@ -7,6 +7,7 @@ $(document).ready(function () {
     const clickedText = $(this).text()
     // ChatGPT를 통해 레시피 추천 요청
     console.log(clickedText)
+    console.log('잠시만 기다려주세요.아래로 스크롤하시면 레시피가 생성됩니다!')
     $('#loading').show()
     $('#table2').show()
     recommendRecipe(clickedText)
@@ -41,6 +42,23 @@ function recommendRecipe(item) {
   }).then(function (response) {
     $('#loading').hide()
     const recommendedRecipe = response.choices[0].message.content
+
+    // 이미지 생성을 위한 데이터
+    const imagePrompt = recommendedRecipe
+
+    // 이미지 생성 요청 보내기
+    $.ajax({
+      url: '/create',
+      method: 'POST',
+      data: {
+        prompt: imagePrompt,
+      },
+    }).then(function (imageUrl) {
+      // 이미지 URL을 받아와서 이미지를 표시
+      $('#recipeImage').attr('src', imageUrl)
+      $('#recipeImage').show()
+    })
+
     // 개행 문자(\n)를 HTML의 <br> 태그로 변환
     const formattedRecipe = recommendedRecipe.replace(/\n/g, '<br>')
     // 결과를 result div에 HTML로 추가
