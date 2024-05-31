@@ -7,8 +7,10 @@ $(document).ready(function () {
     const clickedText = $(this).text()
     // ChatGPT를 통해 레시피 추천 요청
     console.log(clickedText)
-    console.log('잠시만 기다려주세요.아래로 스크롤하시면 레시피가 생성됩니다!')
+    alert('잠시만 기다려주세요.아래로 스크롤하시면 레시피가 생성됩니다!')
     $('#loading').show()
+    $('#picture').show()
+    $('#picture1').show()
     $('#table2').show()
     recommendRecipe(clickedText)
   })
@@ -48,16 +50,59 @@ function recommendRecipe(item) {
 
     // 이미지 생성 요청 보내기
     $.ajax({
-      url: '/create',
+      url: 'https://api.openai.com/v1/images/generations', // DALL·E 이미지 생성 API 엔드포인트
       method: 'POST',
-      data: {
-        prompt: imagePrompt,
+      headers: {
+        Authorization: 'Bearer ' + api_key, // DALL·E API 키
+        'Content-Type': 'application/json',
       },
-    }).then(function (imageUrl) {
-      // 이미지 URL을 받아와서 이미지를 표시
-      $('#recipeImage').attr('src', imageUrl)
-      $('#recipeImage').show()
+      data: JSON.stringify({
+        model: 'dall-e-3', // DALL·E 모델 버전, 실제 사용 가능한 버전 확인 필요
+        prompt: imagePrompt, // 이미지 생성을 위한 텍스트 프롬프트
+        n: 1, // 생성할 이미지의 수
+        size: '1024x1024', // 이미지 크기, 사용 가능한 옵션 확인 필요
+      }),
     })
+      .then(function (response) {
+        const imageUrl = response.data[0].url
+        console.log(imageUrl)
+        $('#picture').hide()
+        $('#imageButton').show() // 이미지 보러가기 버튼 표시
+        // 이미지 보러가기 버튼 클릭 시 이미지 보기
+        $('#imageButton').click(function () {
+          window.open(imageUrl)
+        })
+      })
+      .catch(function (error) {
+        console.error('이미지1 생성 요청 실패:', error)
+      })
+    $.ajax({
+      url: 'https://api.openai.com/v1/images/generations', // DALL·E 이미지 생성 API 엔드포인트
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + api_key, // DALL·E API 키
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        model: 'dall-e-3', // DALL·E 모델 버전, 실제 사용 가능한 버전 확인 필요
+        prompt: item + '을 활용한 음식을 이미지로 표현해줘', // 이미지 생성을 위한 텍스트 프롬프트
+        n: 1, // 생성할 이미지의 수
+        size: '1024x1024', // 이미지 크기, 사용 가능한 옵션 확인 필요
+      }),
+    })
+      .then(function (response) {
+        const imageUrl1 = response.data[0].url
+        $('#picture1').hide()
+        console.log(imageUrl1)
+        $('#image2Button').show() // 이미지 보러가기 버튼 표시
+        // 이미지 보러가기 버튼 클릭 시 이미지 보기
+        $('#image2Button').click(function () {
+          window.open(imageUrl1)
+        })
+      })
+      .catch(function (error) {
+        console.error('이미지2 생성 요청 실패:', error)
+      })
 
     // 개행 문자(\n)를 HTML의 <br> 태그로 변환
     const formattedRecipe = recommendedRecipe.replace(/\n/g, '<br>')

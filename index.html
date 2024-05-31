@@ -76,7 +76,7 @@
       .table2 {
         display: flex;
         justify-content: center;
-
+        flex-direction: column;
         width: 360px;
         height: auto;
         background-color: white;
@@ -219,7 +219,7 @@
             </div>
             <div class="thead">
               <div class="tr">
-                <div id="text-part" class="text11" style="width: 90px"></div>
+                <div id="text-part" class="text11" style="width: 90px">치즈</div>
                 <div id="date-part" style="width: 115px"></div>
                 <div id="d-day-part" style="width: 90px"></div>
               </div>
@@ -259,7 +259,14 @@
         </div>
         <div class="table2" id="table2">
           <div id="loading">Loading...</div>
-          <div id="result"><img id="recipeImage" src="" style="display: none;"></div>
+          <div id="result"></div>
+          <br/>
+          <br/>
+          <div id = "picture">레시피 사진이 생성중입니다... 기다려주세요!</div> 
+          <button id="imageButton">레시피 보러가기</button>
+          <br/> 
+          <div id = "picture1">음식 사진이 생성중입니다... 기다려주세요!</div> 
+          <button id="image2Button">음식 보러가기</button>
       </div>
     </div>
 
