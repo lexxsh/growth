@@ -365,6 +365,8 @@
       const matches = content.match(regex);
 
       if (matches) {
+        img.classList.add("d-none");
+        img1.classList.add("d-none");
         const text = matches[1]; // 한글 텍스트
         const year = matches[2]; // 년
         const month = matches[3].padStart(2, '0'); // 월, 두 자리로 변환
@@ -373,6 +375,7 @@
         // 텍스트 파트에 텍스트 저장
         const newTextElement = document.createElement("div");
         newTextElement.textContent = text;
+        newTextElement.classList.add("text11");
         textPart.appendChild(newTextElement);
         console.log("저장된 텍스트:", text);
 
@@ -404,6 +407,7 @@
       } else {
         // 경고 메시지 표시
         console.log('입력 형식이 잘못되었습니다. 예시: "치즈 2024년 6월 30일."');
+        alert('다시입력해주세요. 예시: "치즈 2024년 6월 30일."')
       }
     });
     </script>
