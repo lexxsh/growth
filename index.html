@@ -361,14 +361,14 @@
 
       // 한글 텍스트와 날짜를 분리
       const content = textArea.value;
-      const regex = /([가-힣]+)\s*[, ]\s*(\d{4})년\s*(\d{2})월\s*(\d{2})일\./;
+      const regex = /([가-힣]+)[, ]\s*(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/;
       const matches = content.match(regex);
 
       if (matches) {
         const text = matches[1]; // 한글 텍스트
         const year = matches[2]; // 년
-        const month = matches[3]; // 월
-        const day = matches[4]; // 일
+        const month = matches[3].padStart(2, '0'); // 월, 두 자리로 변환
+        const day = matches[4].padStart(2, '0'); // 일, 두 자리로 변환
 
         // 텍스트 파트에 텍스트 저장
         const newTextElement = document.createElement("div");
@@ -405,7 +405,7 @@
         console.log("D-Day:", daysLeft);
       } else {
         // 경고 메시지 표시
-        console.log('입력 형식이 잘못되었습니다. 예시: "텍스트, 2024년 06월 30일."');
+        console.log('입력 형식이 잘못되었습니다. 예시: "치즈 2024년 6월 30일."');
       }
     });
     </script>
