@@ -394,13 +394,16 @@
         }
 
         // 오늘 날짜로부터 D-Day 계산
+        expirationDate.setHours(0, 0, 0, 0);
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // 오늘 날짜로부터 D-Day 계산
         const timeDiff = expirationDate - today;
         const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
         // D-Day 파트에 D-Day 저장
         const newDDayElement = document.createElement("div");
-        newDDayElement.textContent = `D-Day: ${daysLeft}일`;
+        newDDayElement.textContent = daysLeft;
         dDayPart.appendChild(newDDayElement);
         console.log("D-Day:", daysLeft);
       } else {
