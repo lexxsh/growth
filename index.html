@@ -387,11 +387,6 @@
 
         // 소비기한 계산
         const expirationDate = new Date(`${year}-${month}-${day}`);
-        if (text === '치즈') {
-          expirationDate.setDate(expirationDate.getDate() + 5);
-        } else if (text === '달걀') {
-          expirationDate.setDate(expirationDate.getDate() + 30);
-        }
 
         // 오늘 날짜로부터 D-Day 계산
         expirationDate.setHours(0, 0, 0, 0);
@@ -400,8 +395,6 @@
 
         // 오늘 날짜로부터 D-Day 계산
         const timeDiff = expirationDate - today;
-        console.log(today);
-        console.log(expirationDate);
         const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
         // D-Day 파트에 D-Day 저장
         const newDDayElement = document.createElement("div");
