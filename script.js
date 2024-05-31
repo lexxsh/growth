@@ -1,5 +1,3 @@
-import GPT_KEY from './apikey'
-
 $(document).ready(function () {
   $('#loading').hide()
   $('#table2').hide()
@@ -16,7 +14,7 @@ $(document).ready(function () {
 })
 
 function recommendRecipe(item) {
-  const api_key = GPT_KEY // ChatGPT API 키
+  const api_key = config.GPT_KEY // ChatGPT API 키
   const messages = [
     { role: 'system', content: 'You are a helpful assistant.' },
     {
