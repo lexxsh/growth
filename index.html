@@ -353,61 +353,61 @@
       };
 
       const addButton = document.querySelector("#add-button");
-      document.getElementById("addButton").addEventListener("click", function () {
+      addButton.addEventListener("click", function () {
         const textArea = document.querySelector("#text-area");
-        const textPart = document.querySelector("#text-part");
-        const datePart = document.querySelector("#date-part");
-        const dDayPart = document.querySelector("#d-day-part");
-  
-        // 한글 텍스트와 날짜를 분리
-        const content = textArea.value;
-        const regex = /([가-힣]+)\s*[, ]\s*(\d{4})년\s*(\d{2})월\s*(\d{2})일\./;
-        const matches = content.match(regex);
-  
-        if (matches) {
-          const text = matches[1]; // 한글 텍스트
-          const year = matches[2]; // 년
-          const month = matches[3]; // 월
-          const day = matches[4]; // 일
-  
-          // 텍스트 파트에 텍스트 저장
-          const newTextElement = document.createElement("div");
-          newTextElement.textContent = text;
-          textPart.appendChild(newTextElement);
-          console.log("저장된 텍스트:", text);
-  
-          // 날짜를 YYYY.MM.DD 형식으로 변환
-          const formattedDate = `${year}.${month}.${day}`;
-  
-          // 날짜 파트에 날짜 저장
-          const newDateElement = document.createElement("div");
-          newDateElement.textContent = formattedDate;
-          datePart.appendChild(newDateElement);
-          console.log("저장된 날짜:", formattedDate);
-  
-          // 소비기한 계산
-          const expirationDate = new Date(`${year}-${month}-${day}`);
-          if (text === '치즈') {
-            expirationDate.setDate(expirationDate.getDate() + 5);
-          } else if (text === '달걀') {
-            expirationDate.setDate(expirationDate.getDate() + 30);
-          }
-  
-          // 오늘 날짜로부터 D-Day 계산
-          const today = new Date();
-          const timeDiff = expirationDate - today;
-          const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-  
-          // D-Day 파트에 D-Day 저장
-          const newDDayElement = document.createElement("div");
-          newDDayElement.textContent = `D-Day: ${daysLeft}일`;
-          dDayPart.appendChild(newDDayElement);
-          console.log("D-Day:", daysLeft);
-        } else {
-          // 경고 메시지 표시
-          console.log('입력 형식이 잘못되었습니다. 예시: "텍스트, 2024년 06월 30일."');
+      const textPart = document.querySelector("#text-part");
+      const datePart = document.querySelector("#date-part");
+      const dDayPart = document.querySelector("#d-day-part");
+
+      // 한글 텍스트와 날짜를 분리
+      const content = textArea.value;
+      const regex = /([가-힣]+)\s*[, ]\s*(\d{4})년\s*(\d{2})월\s*(\d{2})일\./;
+      const matches = content.match(regex);
+
+      if (matches) {
+        const text = matches[1]; // 한글 텍스트
+        const year = matches[2]; // 년
+        const month = matches[3]; // 월
+        const day = matches[4]; // 일
+
+        // 텍스트 파트에 텍스트 저장
+        const newTextElement = document.createElement("div");
+        newTextElement.textContent = text;
+        textPart.appendChild(newTextElement);
+        console.log("저장된 텍스트:", text);
+
+        // 날짜를 YYYY.MM.DD 형식으로 변환
+        const formattedDate = `${year}.${month}.${day}`;
+
+        // 날짜 파트에 날짜 저장
+        const newDateElement = document.createElement("div");
+        newDateElement.textContent = formattedDate;
+        datePart.appendChild(newDateElement);
+        console.log("저장된 날짜:", formattedDate);
+
+        // 소비기한 계산
+        const expirationDate = new Date(`${year}-${month}-${day}`);
+        if (text === '치즈') {
+          expirationDate.setDate(expirationDate.getDate() + 5);
+        } else if (text === '달걀') {
+          expirationDate.setDate(expirationDate.getDate() + 30);
         }
-      });
+
+        // 오늘 날짜로부터 D-Day 계산
+        const today = new Date();
+        const timeDiff = expirationDate - today;
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        // D-Day 파트에 D-Day 저장
+        const newDDayElement = document.createElement("div");
+        newDDayElement.textContent = `D-Day: ${daysLeft}일`;
+        dDayPart.appendChild(newDDayElement);
+        console.log("D-Day:", daysLeft);
+      } else {
+        // 경고 메시지 표시
+        console.log('입력 형식이 잘못되었습니다. 예시: "텍스트, 2024년 06월 30일."');
+      }
+    });
     </script>
   </body>
 </html>
