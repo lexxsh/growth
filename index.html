@@ -125,8 +125,13 @@
         align-items: center;
       }
       .text11 {
-        background-color: rgba(0, 97, 243, 0.3);
         border-radius: 30px;
+        height: 20px;
+        width: 200px;
+      }
+  
+      .text11:not(:empty) {
+        background-color: rgba(0, 97, 243, 0.3);
         border: 2px solid rgba(0, 97, 243, 0.5);
       }
     </style>
@@ -214,9 +219,7 @@
             </div>
             <div class="thead">
               <div class="tr">
-                <div id="text-part" class="text11" style="width: 90px">
-                
-                </div>
+                <div id="text-part" class="text11" style="width: 90px"></div>
                 <div id="date-part" style="width: 115px"></div>
                 <div id="d-day-part" style="width: 90px"></div>
               </div>
@@ -350,41 +353,57 @@
       };
 
       const addButton = document.querySelector("#add-button");
-      addButton.addEventListener("click", function () {
+      document.getElementById("addButton").addEventListener("click", function () {
         const textArea = document.querySelector("#text-area");
         const textPart = document.querySelector("#text-part");
         const datePart = document.querySelector("#date-part");
-
+        const dDayPart = document.querySelector("#d-day-part");
+  
         // 한글 텍스트와 숫자 날짜를 분리
         const content = textArea.value;
-        const regex = /([가-힣]+)[, ]+(\d{8})\./;
+        const regex = /([가-힣]+)\s*[, ]\s*(\d{8})\./;
         const matches = content.match(regex);
-
+  
         if (matches) {
-          img.classList.add("d-none");
-          img1.classList.add("d-none");
           const text = matches[1]; // 한글 텍스트
           const dateString = matches[2]; // 날짜 숫자 문자열
-
+  
           // 텍스트 파트에 텍스트 저장
           const newTextElement = document.createElement("div");
           newTextElement.textContent = text;
           textPart.appendChild(newTextElement);
-          // 콘솔에 텍스트 출력
           console.log("저장된 텍스트:", text);
-
+  
           // 날짜를 YYYY.MM.DD 형식으로 변환
           const year = dateString.slice(0, 4);
           const month = dateString.slice(4, 6);
           const day = dateString.slice(6, 8);
           const formattedDate = `${year}.${month}.${day}`;
-
+  
           // 날짜 파트에 날짜 저장
           const newDateElement = document.createElement("div");
           newDateElement.textContent = formattedDate;
           datePart.appendChild(newDateElement);
-          // 콘솔에 날짜 출력
           console.log("저장된 날짜:", formattedDate);
+  
+          // 소비기한 계산
+          const expirationDate = new Date(`${year}-${month}-${day}`);
+          if (text === '치즈') {
+            expirationDate.setDate(expirationDate.getDate() + 5);
+          } else if (text === '달걀') {
+            expirationDate.setDate(expirationDate.getDate() + 30);
+          }
+  
+          // 오늘 날짜로부터 D-Day 계산
+          const today = new Date();
+          const timeDiff = expirationDate - today;
+          const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  
+          // D-Day 파트에 D-Day 저장
+          const newDDayElement = document.createElement("div");
+          newDDayElement.textContent = `D-Day: ${daysLeft}일`;
+          dDayPart.appendChild(newDDayElement);
+          console.log("D-Day:", daysLeft);
         } else {
           // 경고 메시지 표시
           console.log('입력 형식이 잘못되었습니다. 예시: "텍스트, 20240101."');
