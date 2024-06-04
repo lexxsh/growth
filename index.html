@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>음성 인식 날짜 비교</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="apikey.js"></script>
-    <script src="script.js"></script>
-
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -129,7 +125,6 @@
         height: 20px;
         width: 86px;
       }
-  
       .text11:not(:empty) {
         background-color: rgba(0, 97, 243, 0.3);
         border: 2px solid rgba(0, 97, 243, 0.5);
@@ -283,160 +278,135 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        updateCurrentDate();
-        setMidnightUpdate();
-      });
-
-      function updateCurrentDate() {
-        const currentDate = new Date();
-        const currentDateFormatted = currentDate.toLocaleDateString("ko-KR");
-        document.getElementById("current-date-cell").innerText =
-          currentDateFormatted;
-      }
-
-      function setMidnightUpdate() {
-        const now = new Date();
-        const night = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + 1,
-          0,
-          0,
-          0
-        );
-        const msToMidnight = night.getTime() - now.getTime();
-
-        setTimeout(() => {
           updateCurrentDate();
           setMidnightUpdate();
-        }, msToMidnight);
+      });
+      
+      function updateCurrentDate() {
+          const currentDate = new Date();
+          const currentDateFormatted = currentDate.toLocaleDateString("ko-KR");
+          document.getElementById("current-date-cell").innerText = currentDateFormatted;
       }
-
+      
+      function setMidnightUpdate() {
+          const now = new Date();
+          const night = new Date(
+              now.getFullYear(),
+              now.getMonth(),
+              now.getDate() + 1,
+              0,
+              0,
+              0
+          );
+          const msToMidnight = night.getTime() - now.getTime();
+      
+          setTimeout(() => {
+              updateCurrentDate();
+              setMidnightUpdate();
+          }, msToMidnight);
+      }
+      
       const stt_start_button = document.querySelector("#stt-start-button");
       const stt_stop_button = document.querySelector("#stt-stop-button");
-      const stt_start_text = document.querySelector("#status-start-text");
-      const stt_stop_text = document.querySelector("#status-stop-text");
       const img = document.querySelector("#img");
       const img1 = document.querySelector("#img1");
-      const add_button = document.querySelector("#add-button");
+      const addButton = document.querySelector("#add-button");
       const message = document.querySelector("#message");
       const content_field = document.querySelector("#stt-form [name=content]");
-      const dateTableBody = document.querySelector("#dateTableBody");
-      let lastTranscript = "";
-      const table1 = document.querySelector("#table2");
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const speech_recognition = new SpeechRecognition();
-      speech_recognition.lang = "ko-kr";
+      speech_recognition.lang = "ko-KR";
       speech_recognition.continuous = true;
+      
       stt_stop_button.classList.add("d-none");
-      stt_stop_text.classList.add("d-none");
+      
       stt_start_button.addEventListener("click", (e) => {
-        e.preventDefault();
-        enable_stt();
+          e.preventDefault();
+          enable_stt();
       });
-
+      
       stt_stop_button.addEventListener("click", (e) => {
-        e.preventDefault();
-        disable_stt();
+          e.preventDefault();
+          disable_stt();
       });
-
+      
       function enable_stt() {
-        stt_stop_button.classList.remove("d-none");
-        stt_stop_text.classList.remove("d-none");
-        stt_start_button.classList.add("d-none");
-        speech_recognition.start();
-        message.innerHTML = "음성인식 중...";
+          stt_stop_button.classList.remove("d-none");
+          stt_start_button.classList.add("d-none");
+          speech_recognition.start();
+          message.innerHTML = "음성인식 중...";
       }
-
+      
       function disable_stt() {
-        stt_start_button.classList.remove("d-none");
-        stt_stop_button.classList.add("d-none");
-        stt_stop_text.classList.add("d-none");
-        speech_recognition.stop();
-        message.innerHTML = "버튼을 누르고 말씀하세요.";
+          stt_start_button.classList.remove("d-none");
+          stt_stop_button.classList.add("d-none");
+          speech_recognition.stop();
+          message.innerHTML = "버튼을 누르고 말씀하세요.";
       }
-
+      
       speech_recognition.onresult = function (e) {
-        lastTranscript = Array.from(e.results)
-          .map((result) => result[0])
-          .map((speech) => speech.transcript)
-          .join(" ");
-        content_field.value = lastTranscript;
+          lastTranscript = Array.from(e.results)
+              .map((result) => result[0])
+              .map((speech) => speech.transcript)
+              .join(" ");
+          content_field.value = lastTranscript;
       };
-
+      
       speech_recognition.onerror = function (e) {
-        console.error(e);
-        disable_stt();
+          console.error(e);
+          disable_stt();
       };
-
-      const addButton = document.querySelector("#add-button");
+      
       addButton.addEventListener("click", function () {
-        const textArea = document.querySelector("#text-area");
-      const textPart = document.querySelector("#text-part");
-      const datePart = document.querySelector("#date-part");
-      const dDayPart = document.querySelector("#d-day-part");
-
-      // 한글 텍스트와 날짜를 분리
-      const content = textArea.value;
-      const regex = /([가-힣]+)[, ]\s*(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/;
-      const matches = content.match(regex);
-
-      if (matches) {
-        img.classList.add("d-none");
-        img1.classList.add("d-none");
-        const text = matches[1]; // 한글 텍스트
-        const year = matches[2]; // 년
-        const month = matches[3].padStart(2, '0'); // 월, 두 자리로 변환
-        const day = matches[4].padStart(2, '0'); // 일, 두 자리로 변환
-
-        // 텍스트 파트에 텍스트 저장
-        const newTextElement = document.createElement("div");
-        newTextElement.textContent = text;
-        textPart.appendChild(newTextElement);
-        if (textPart.children.length > 1) {
-          newTextElement.classList.add("text11"); // 두 번째 이후에만 클래스 추가
-      }
-        console.log("저장된 텍스트:", text);
-
-        // 날짜를 YYYY.MM.DD 형식으로 변환
-        const formattedDate = `${year}.${month}.${day}`;
-
-        // 날짜 파트에 날짜 저장
-        const newDateElement = document.createElement("div");
-        newDateElement.textContent = formattedDate;
-        datePart.appendChild(newDateElement);
-        console.log("저장된 날짜:", formattedDate);
-
-        // 소비기한 계산
-        const expirationDate = new Date(`${year}-${month}-${day}`);
-
-        // 오늘 날짜로부터 D-Day 계산
-        expirationDate.setHours(0, 0, 0, 0);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        // 오늘 날짜로부터 D-Day 계산
-        const timeDiff = expirationDate - today;
-        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-        // D-Day 파트에 D-Day 저장
-        const newDDayElement = document.createElement("div");
-newDDayElement.textContent = `D-Day: ${daysLeft}`;
-if (daysLeft <= 3) {
-    newDDayElement.classList.add("text-danger"); // 빨간색 (예: 'text-danger' 클래스)
-} else if (daysLeft <= 7) {
-    newDDayElement.classList.add("text-warning"); // 주황색 (예: 'text-warning' 클래스)
-} else {
-    newDDayElement.classList.add("text-success"); // 초록색 (예: 'text-success' 클래스)
-}
-        dDayPart.appendChild(newDDayElement);
-        console.log("D-Day:", daysLeft);
-      } else {
-        // 경고 메시지 표시
-        console.log('입력 형식이 잘못되었습니다. 예시: "치즈 2024년 6월 30일."');
-        alert('다시 입력해주세요. 예시: "치즈 2024년 6월 30일."')
-      }
-    });
-    </script>
+          const textArea = document.querySelector("#text-area");
+          const textPart = document.querySelector("#text-part");
+          const datePart = document.querySelector("#date-part");
+          const dDayPart = document.querySelector("#d-day-part");
+          const content = textArea.value;
+          const regex = /([가-힣]+)[, ]\s*(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/;
+          const matches = content.match(regex);
+      
+          if (matches) {
+              img.classList.add("d-none");
+              img1.classList.add("d-none");
+              const text = matches[1];
+              const year = matches[2];
+              const month = matches[3].padStart(2, '0');
+              const day = matches[4].padStart(2, '0');
+              const newTextElement = document.createElement("div");
+              newTextElement.textContent = text;
+              textPart.appendChild(newTextElement);
+              if (textPart.children.length > 1) {
+                  newTextElement.classList.add("text11");
+              }
+              console.log("저장된 텍스트:", text);
+              const formattedDate = `${year}.${month}.${day}`;
+              const newDateElement = document.createElement("div");
+              newDateElement.textContent = formattedDate;
+              datePart.appendChild(newDateElement);
+              console.log("저장된 날짜:", formattedDate);
+              const expirationDate = new Date(`${year}-${month}-${day}`);
+              expirationDate.setHours(0, 0, 0, 0);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              const timeDiff = expirationDate - today;
+              const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+              const newDDayElement = document.createElement("div");
+              newDDayElement.textContent = `D-Day: ${daysLeft}`;
+              if (daysLeft <= 3) {
+                  newDDayElement.classList.add("text-danger");
+              } else if (daysLeft <= 7) {
+                  newDDayElement.classList.add("text-warning");
+              } else {
+                  newDDayElement.classList.add("text-success");
+              }
+              dDayPart.appendChild(newDDayElement);
+              console.log("D-Day:", daysLeft);
+          } else {
+              console.log('입력 형식이 잘못되었습니다. 예시: "치즈 2024년 6월 30일."');
+              alert('다시 입력해주세요. 예시: "치즈 2024년 6월 30일."')
+          }
+      });
+      </script>
   </body>
 </html>
