@@ -134,6 +134,17 @@
         background-color: rgba(0, 97, 243, 0.3);
         border: 2px solid rgba(0, 97, 243, 0.5);
       }
+      .text-danger {
+        color: red;
+    }
+    
+    .text-warning {
+        color: orange;
+    }
+    
+    .text-success {
+        color: green;
+    }
     </style>
   </head>
   <body>
@@ -409,25 +420,17 @@
         const timeDiff = expirationDate - today;
         const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
         // D-Day 파트에 D-Day 저장
-        let urgencyColor;
-if(daysLeft <= 3) {
-    // D-Day가 3일 이하면 빨간색
-    urgencyColor = 'red';
-} else if(daysLeft <= 7) {
-    // D-Day가 7일 이하면 주황색
-    urgencyColor = 'orange';
-} else {
-    // 그 이외는 초록색
-    urgencyColor = 'green';
-}
-
-// D-Day 파트에 D-Day 저장 및 색상 적용
-const newDDayElement = document.createElement("div");
+        const newDDayElement = document.createElement("div");
 newDDayElement.textContent = `D-Day: ${daysLeft}`;
-// 색상 적용
-newDDayElement.style.color = urgencyColor;
-dDayPart.appendChild(newDDayElement);
-console.log("D-Day:", daysLeft);
+if (daysLeft <= 3) {
+    newDDayElement.classList.add("text-danger"); // 빨간색 (예: 'text-danger' 클래스)
+} else if (daysLeft <= 7) {
+    newDDayElement.classList.add("text-warning"); // 주황색 (예: 'text-warning' 클래스)
+} else {
+    newDDayElement.classList.add("text-success"); // 초록색 (예: 'text-success' 클래스)
+}
+        dDayPart.appendChild(newDDayElement);
+        console.log("D-Day:", daysLeft);
       } else {
         // 경고 메시지 표시
         console.log('입력 형식이 잘못되었습니다. 예시: "치즈 2024년 6월 30일."');
